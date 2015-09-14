@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Georeferênciamento Codhab</title>
+  <link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+  <link rel="stylesheet" href="lib/MarkerCluster.css">
+  <link rel="stylesheet" href="lib/MarkerCluster.Default.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body ng-app="angular-mapbox-example" ng-controller="demoController">
+<nav class="navbar navbar-default" style="margin-bottom: 0 !important">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Georeferênciamento Codhab</a>
+    </div>
+    
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1" >
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          Filtrar por
+          <select ng-model='filter_map' ng-change="setFilter(filter_map)" class='form-control'>
+            <option value="idoso">Por idosos</option>
+            <option value="deficiente">Por deficiêntes</option>
+            <option value="faixa_1">Faixa 1</option>
+            <option value="faixa_2">Faixa 2</option>
+            <option value="faixa_3">Faixa 3</option>
+            <option value="faixa_4">Faixa 4</option>
+          </select>
+          <input ng-model="filterTerm"  type="text" class="form-control" placeholder="Pesquisar Cidade..."> 
+        </div>
+      </form>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+  <mapbox map-id="licyeus.i9pkgkg8"
+          lat="-15.7799"
+          lng="-44.6965"
+          on-reposition="mapMovedCallback"
+          on-zoom="mapZoomedCallback"
+          zoom="15"  width= '100%' height='700px' scale-to-fit>
+
+    <marker ng-repeat="market in farmersMarkets | filter: filterTerm" lat="{{market.Lt}}" lng="{{market.Lg}}" id="{{market.$$hashKey}}" color="orange" icon="circle" size="{{total_size}}" >
+      <h3><b>{{market.City}}</b></h3>
+      <h3><b>Total de habilitados: </b> {{market.Total}}</h3>
+      <table class='table table-bordered table-striped table-condensed'>
+        <thead>
+          <tr>
+            <th>Homens</th>
+            <th>Mulheres</th>
+            <th>Idosos</th>
+            <th>Deficiêntes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{market.Male}}</td>
+            <td>{{market.Female}}</td>
+            <td>{{market.Elderly}}</td>
+            <td>{{market.Special}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class='table table-bordered table-striped table-condensed'>
+        <thead>
+          <tr>
+            <th>Faixa 1</th>
+            <th>Faixa 2</th>
+            <th>Faixa 3</th>
+            <th>Faixa 4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{market.Zone1}}</td>
+            <td>{{market.Zone2}}</td>
+            <td>{{market.Zone3}}</td>
+            <td>{{market.Zone4}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h4><a href="#">detalhar habilitados</a></h4>
+    </marker>
+  </mapbox>
+
+  <div style="padding: 10px">
+    <hr />
+     <div class='row'>
+      <div class='col-md-12'>
+         <table class='table table-bordered table-striped table-condensed'>
+          <thead>
+            <tr>
+              <th>Cidade</th>
+              <th>Total</th>
+              <th>Faixa 1</th>
+              <th>Faixa 2</th>
+              <th>Faixa 3</th>
+              <th>Faixa 4</th>
+              <th>Homens/Mulheres</th>
+              <th>Idosos</th>
+              <th>Deficiêntes</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr  ng-repeat="market in farmersMarkets | filter: filterTerm">
+              <td>{{market.City}}</td>
+              <td>{{market.Total}}</td>
+              <td>{{market.Zone1}}</td>
+              <td>{{market.Zone2}}</td>
+              <td>{{market.Zone3}}</td>
+              <td>{{market.Zone4}}</td>
+              <td>{{market.Male}} / {{market.Female}}</td>
+              <td>{{market.Elderly}}</td>
+              <td>{{market.Special}}</td>
+              <td><a href="#">detalhar cidade</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+  <script src="lib/angular-1.2.js"></script>
+  <script src="lib/leaflet.markercluster.js"></script>
+  <script src="../dist/angular-mapbox.js"></script>
+  <script src="example-app.js"></script>
+
+
+</body>
+</html>
